@@ -137,6 +137,9 @@ func tryURLs(cmd *cobra.Command, f DoFunc) {
 	endpoints := strings.Split(addrs, ",")
 	for _, endpoint := range endpoints {
 		var u *url.URL
+		if !strings.HasPrefix(endpoint, "http://") {
+			endpoint = "http://" + endpoint
+		}
 		u, err = url.Parse(endpoint)
 		if err != nil {
 			cmd.Println("address format is wrong, should like 'http://127.0.0.1:2379' or '127.0.0.1:2379'")
