@@ -564,7 +564,7 @@ func (c *ResourceGroupsController) IsBackgroundRequest(ctx context.Context,
 	resourceGroupName, requestResource string) bool {
 	gc, err := c.tryGetResourceGroup(ctx, resourceGroupName)
 	if err != nil {
-		failedRequestCounter.WithLabelValues(resourceGroupName).Inc()
+		failedRequestCounter.WithLabelValues(resourceGroupName, resourceGroupName).Inc()
 		return false
 	}
 
@@ -577,7 +577,7 @@ func (c *ResourceGroupsController) checkBackgroundSettings(ctx context.Context, 
 		resourceGroupName := "default"
 		gc, err := c.tryGetResourceGroup(ctx, resourceGroupName)
 		if err != nil {
-			failedRequestCounter.WithLabelValues(resourceGroupName).Inc()
+			failedRequestCounter.WithLabelValues(resourceGroupName, resourceGroupName).Inc()
 			return false
 		}
 		bg = gc.getMeta().BackgroundSettings
