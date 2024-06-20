@@ -1189,6 +1189,9 @@ func (c *client) BatchScanRegions(ctx context.Context, ranges []KeyRange, limit 
 		return nil, errs.ErrClientGetProtoClient
 	}
 	resp, err := pdpb.NewPDClient(serviceClient.GetClientConn()).BatchScanRegions(cctx, req)
+	failpoint.Inject("responseNil", func() {
+		resp = nil
+	})
 	if serviceClient.NeedRetry(resp.GetHeader().GetError(), err) {
 		protoClient, cctx := c.getClientAndContext(scanCtx)
 		if protoClient == nil {
